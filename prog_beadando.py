@@ -119,14 +119,18 @@ if st.button("Adatok letöltése és feldolgozása"):
         show_scatter_diagram(data["school_number"], data["number_of_students"], "Iskolák", "Diákok")
 
         all_years_with_future = list(range(min(data["year_start"]), max(data["year_start"]) + FUTURE_YEARS))
+        
+        # Diákok előrejelzése
         student_model = create_linear_model(data, "year_start", "number_of_students")
         student_predicted = student_model.predict([[xx] for xx in all_years_with_future])
-        student_real_and_predicted = list(data["number_of_students"]) + list(student_predicted[len(student_real_and_predicted):])
+        student_real_and_predicted = list(data["number_of_students"]) + list(student_predicted[len(data["number_of_students"]):])
 
+        # Tanárok előrejelzése
         teacher_model = create_linear_model(data, "year_start", "number_of_teachers")
         teacher_predicted = teacher_model.predict([[xx] for xx in all_years_with_future])
-        teacher_real_and_predicted = list(data["number_of_teachers"]) + list(teacher_predicted[len(teacher_real_and_predicted):])
+        teacher_real_and_predicted = list(data["number_of_teachers"]) + list(teacher_predicted[len(data["number_of_teachers"]):])
 
+        # Új dataframe a valós és előrejelzett adatokat tartalmazza
         data_pred = pd.DataFrame({
             "year_start": all_years_with_future,
             "student_predicted": student_predicted,
@@ -135,6 +139,7 @@ if st.button("Adatok letöltése és feldolgozása"):
             "teacher_real_and_predicted": teacher_real_and_predicted
         })
 
+        # Diagramok megjelenítése
         show_mixed_diagram(
             data_pred["year_start"],
             data_pred[["student_real_and_predicted", "student_predicted", "teacher_real_and_predicted", "teacher_predicted"]],
