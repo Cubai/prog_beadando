@@ -1,6 +1,5 @@
 requests
-StringIO
 pandas
-matplotlib.pyplot
-LinearRegression
+matplotlib
+scikit-learn
 streamlit
