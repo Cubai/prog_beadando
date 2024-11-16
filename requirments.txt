@@ -1,0 +1,6 @@
+requests
+StringIO
+pandas
+matplotlib.pyplot
+LinearRegression
+streamlit
